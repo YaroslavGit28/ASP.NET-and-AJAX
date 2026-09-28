@@ -1,0 +1,764 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASP.NET Core: Жизненный цикл, Форма и Middleware</title>
+    <style>
+        :root {
+            --bg: #edf4ff;
+            --bg-strong: #dfeaff;
+            --panel: rgba(255, 255, 255, 0.78);
+            --panel-strong: #ffffff;
+            --line: rgba(125, 146, 186, 0.22);
+            --text: #1c2340;
+            --muted: #5d6c90;
+            --primary: #5b6cff;
+            --primary-2: #7a4dff;
+            --success: #17b26a;
+            --warning: #ffb020;
+            --danger: #f04452;
+            --cyan: #37c7ff;
+            --shadow: 0 18px 45px rgba(91, 108, 255, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(91,108,255,0.16), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(55,199,255,0.18), transparent 25%),
+                linear-gradient(135deg, var(--bg) 0%, #f7faff 35%, #eef7ff 100%);
+            color: var(--text);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(18px);
+            background: rgba(255, 255, 255, 0.68);
+            border-bottom: 1px solid var(--line);
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(28, 35, 64, 0.06);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .brand-badge {
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            box-shadow: 0 8px 18px rgba(91,108,255,0.28);
+            color: #fff;
+            font-size: 0.72rem;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .header-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .stat-badge {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--line);
+            color: var(--muted);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+
+        .stat-badge strong {
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 28px auto 0;
+            padding: 0 18px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(255,255,255,0.82), rgba(227,236,255,0.8));
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(1.8rem, 2vw, 2.5rem);
+            margin-bottom: 10px;
+            color: var(--text);
+            letter-spacing: -0.04em;
+        }
+
+        .hero-text p {
+            color: var(--muted);
+            font-size: 1rem;
+            max-width: 680px;
+        }
+
+        .pipeline-box {
+            background: rgba(16, 24, 48, 0.94);
+            color: #ebf2ff;
+            border: 1px solid rgba(122, 77, 255, 0.25);
+            border-radius: 18px;
+            padding: 18px 20px;
+            min-width: 360px;
+            box-shadow: 0 18px 35px rgba(17, 24, 39, 0.28);
+        }
+
+        .pipeline-title {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #98a8d7;
+            margin-bottom: 14px;
+        }
+
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pipeline-node {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .pipeline-node.node-blue { color: #8cc8ff; border-color: rgba(140,200,255,0.4); }
+        .pipeline-node.node-yellow { color: #ffd166; border-color: rgba(255,209,102,0.4); }
+        .pipeline-node.node-green { color: #7fe4b4; border-color: rgba(127,228,180,0.4); }
+        .pipeline-arrow { color: #9faed3; font-weight: 900; }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 14px 30px rgba(70, 80, 120, 0.08);
+        }
+
+        .card-header {
+            background: rgba(255, 255, 255, 0.76);
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--line);
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select, textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(137, 152, 191, 0.35);
+            border-radius: 12px;
+            padding: 11px 14px;
+            font-size: 0.96rem;
+            color: var(--text);
+            font-family: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus, textarea:focus {
+            outline: none;
+            border-color: rgba(91, 108, 255, 0.6);
+            box-shadow: 0 0 0 4px rgba(91, 108, 255, 0.12);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 92px;
+        }
+
+        .btn {
+            appearance: none;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            color: #fff;
+            box-shadow: 0 10px 22px rgba(91, 108, 255, 0.26);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.72);
+            color: var(--text);
+            border: 1px solid var(--line);
+            box-shadow: none;
+        }
+
+        .btn-sm {
+            padding: 7px 12px;
+            font-size: 0.8rem;
+        }
+
+        .di-box {
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.72);
+        }
+
+        .di-box-transient {
+            background: linear-gradient(135deg, rgba(240, 68, 82, 0.08), rgba(255,255,255,0.7));
+            border-color: rgba(240, 68, 82, 0.18);
+        }
+
+        .di-box-scoped {
+            background: linear-gradient(135deg, rgba(55, 199, 255, 0.08), rgba(255,255,255,0.72));
+            border-color: rgba(55, 199, 255, 0.18);
+        }
+
+        .di-box-singleton {
+            background: linear-gradient(135deg, rgba(23, 178, 106, 0.08), rgba(255,255,255,0.72));
+            border-color: rgba(23, 178, 106, 0.18);
+        }
+
+        .di-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 6px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .badge-transient { background: rgba(240, 68, 82, 0.12); color: #c43242; }
+        .badge-scoped { background: rgba(55, 199, 255, 0.12); color: #1b88c2; }
+        .badge-singleton { background: rgba(23, 178, 106, 0.12); color: #198b5a; }
+
+        .di-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .di-row span.label {
+            color: var(--muted);
+        }
+
+        .guid-code {
+            font-family: "Consolas", "SFMono-Regular", monospace;
+            background: rgba(11, 17, 31, 0.04);
+            padding: 4px 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(124, 143, 184, 0.25);
+            font-size: 0.76rem;
+            color: var(--primary);
+        }
+
+        .di-note {
+            font-size: 0.76rem;
+            margin-top: 8px;
+            color: var(--muted);
+        }
+
+        .alert {
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            border: 1px solid transparent;
+        }
+
+        .alert-success {
+            background: rgba(23, 178, 106, 0.1);
+            border-color: rgba(23, 178, 106, 0.25);
+            color: #19795a;
+        }
+
+        .alert-info {
+            background: rgba(91, 108, 255, 0.08);
+            border-color: rgba(91, 108, 255, 0.18);
+            color: #3f4ecf;
+        }
+
+        .alert-danger {
+            background: rgba(240, 68, 82, 0.08);
+            border-color: rgba(240, 68, 82, 0.22);
+            color: #c93240;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        th {
+            background: rgba(91, 108, 255, 0.06);
+            text-align: left;
+            padding: 10px 12px;
+            color: var(--muted);
+            border-bottom: 1px solid var(--line);
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(125,146,186,0.16);
+            color: var(--text);
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.72rem;
+        }
+
+        .status-200 { background: rgba(23, 178, 106, 0.12); color: #147d4d; }
+        .status-400 { background: rgba(240, 68, 82, 0.12); color: #bf3546; }
+
+        .event-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(235,240,255,0.8));
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+        }
+
+        .event-card .title {
+            font-weight: 800;
+            font-size: 0.82rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .event-card .desc {
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .pipeline-box {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="brand">
+            <span>⚙️ ASP.NET Core</span>
+            <span class="brand-badge">Lifecycle & Middleware Demo</span>
+        </div>
+        <div class="header-stats">
+            <div class="stat-badge">Хост: <strong id="navHostStatus" style="color: var(--success);">Running</strong></div>
+            <div class="stat-badge">птайм: <strong id="navUptime">00ч 00м 00с</strong></div>
+            <div class="stat-badge">Платформа: <strong>.NET 8.0 (Empty Web)</strong></div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Жизненный цикл приложения, Форма и Middleware</h1>
+                <p>
+                    Проект создан из <strong>пустого шаблона ASP.NET Core</strong>. Показывает прохождение HTTP-запроса через кастомный конвейер <strong>Middleware</strong>, работу интерактивной формы и сопоставление 3-х жизненных циклов служб <strong>Dependency Injection</strong>.
+                </p>
+            </div>
+            <div class="pipeline-box">
+                <div class="pipeline-title">Схема конвейера обработки формы</div>
+                <div class="pipeline-flow">
+                    <div class="pipeline-node node-blue">HTTP Request</div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-node node-yellow">Lifecycle Mid</div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-node node-yellow">Form Mid</div>
+                    <div class="pipeline-arrow">→</div>
+                    <div class="pipeline-node node-green">Endpoint (DI)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">
+                    <span>📝 Форма обратной связи</span>
+                    <span style="font-family: Consolas, monospace; font-size: 0.76rem; color: var(--primary);">POST /submit</span>
+                </div>
+                <div class="card-body">
+                    <div id="alertBox" class="alert" style="display: none;"></div>
+
+                    <form id="feedbackForm" action="/submit" method="post">
+                        <div class="form-group">
+                            <label>Ваше имя <span style="color: var(--danger);">*</span></label>
+                            <input type="text" class="form-control" name="name" id="fieldName" placeholder="Например: Алексей Смирнов" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Электронная почта <span style="color: var(--danger);">*</span></label>
+                            <input type="email" class="form-control" name="email" id="fieldEmail" placeholder="alexey@domain.ru" required>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="form-group">
+                                <label>Категория запроса</label>
+                                <select class="form-select" name="category" id="fieldCategory">
+                                    <option value="опрос по Middleware">опрос по Middleware</option>
+                                    <option value="Жизненный цикл DI">Жизненный цикл DI</option>
+                                    <option value="Архитектура ASP.NET Core">Архитектура ASP.NET Core</option>
+                                    <option value="Предложение по проекту">Предложение по проекту</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Приоритет</label>
+                                <select class="form-select" name="priority" id="fieldPriority">
+                                    <option value="1">Низкий (1)</option>
+                                    <option value="2" selected>Обычный (2)</option>
+                                    <option value="3">Высокий (3)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Текст обращения / опрос</label>
+                            <textarea name="message" id="fieldMessage" rows="3" placeholder="Пишите вопрос для передачи через конвейер Middleware..."></textarea>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap;">
+                            <button type="submit" class="btn" id="btnSubmit">🚀 Отправить форму</button>
+                            <button type="button" class="btn btn-secondary" id="btnDemo">⚡ Заполнить демо-данными</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>🔬 Жизненные циклы служб (DI Lifetimes)</span>
+                    <button class="btn btn-secondary btn-sm" id="btnRefreshLifecycle">🔄 Обновить</button>
+                </div>
+                <div class="card-body">
+                    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 16px;">
+                        Каждый тип времени жизни DI по-разному управляет созданием и переиспользованием экземпляров:
+                    </p>
+
+                    <div class="di-box di-box-transient">
+                        <div class="di-header">
+                            <span class="badge badge-transient">Transient</span>
+                            <span style="font-size: 0.75rem; color: #cc3b4e; font-weight: 700;">Каждый раз новый экземпляр</span>
+                        </div>
+                        <div class="di-row">
+                            <span class="label">Инъекция 1 (Endpoint):</span>
+                            <span class="guid-code" id="idTransient1">загрузка...</span>
+                        </div>
+                        <div class="di-row">
+                            <span class="label">Инъекция 2 (Service):</span>
+                            <span class="guid-code" id="idTransient2">загрузка...</span>
+                        </div>
+                        <div class="di-note" style="color: #c93d4f;">
+                            ⚠ GUID отличаются даже внутри одного HTTP-запроса.
+                        </div>
+                    </div>
+
+                    <div class="di-box di-box-scoped">
+                        <div class="di-header">
+                            <span class="badge badge-scoped">Scoped</span>
+                            <span style="font-size: 0.75rem; color: #1a7db1; font-weight: 700;">Один на весь запрос</span>
+                        </div>
+                        <div class="di-row">
+                            <span class="label">Инъекция 1 (Endpoint):</span>
+                            <span class="guid-code" id="idScoped1">загрузка...</span>
+                        </div>
+                        <div class="di-row">
+                            <span class="label">Инъекция 2 (Service):</span>
+                            <span class="guid-code" id="idScoped2">загрузка...</span>
+                        </div>
+                        <div class="di-note" style="color: #1a7db1;">
+                            ✓ GUID совпадают в пределах одного запроса и меняются между запросами.
+                        </div>
+                    </div>
+
+                    <div class="di-box di-box-singleton">
+                        <div class="di-header">
+                            <span class="badge badge-singleton">Singleton</span>
+                            <span style="font-size: 0.75rem; color: #1d8b60; font-weight: 700;">Один на все время работы</span>
+                        </div>
+                        <div class="di-row">
+                            <span class="label">Инъекция 1 (Endpoint):</span>
+                            <span class="guid-code" id="idSingleton1">загрузка...</span>
+                        </div>
+                        <div class="di-row">
+                            <span class="label">Инъекция 2 (Service):</span>
+                            <span class="guid-code" id="idSingleton2">загрузка...</span>
+                        </div>
+                        <div class="di-note" style="color: #1d8b60;">
+                            🔒 GUID остается постоянным между любыми запросами.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-header">
+                    <span>📋 Журнал конвейера Middleware</span>
+                    <span id="reqCount" style="font-size: 0.8rem; color: var(--muted);">0 запросов</span>
+                </div>
+                <div class="card-body" style="padding: 0; max-height: 280px; overflow-y: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Метод</th>
+                                <th>Путь</th>
+                                <th>Статус</th>
+                                <th>Время</th>
+                                <th>Метка</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logTableBody">
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: var(--muted); padding: 20px;">
+                                    Журнал пуст. Выполните отправку формы.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>⚡ События IHostApplicationLifetime</span>
+                    <span style="font-size: 0.8rem; color: var(--success);">Active</span>
+                </div>
+                <div class="card-body" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div class="event-card">
+                        <div class="title" style="color: var(--success);">
+                            <span>● ApplicationStarted</span>
+                            <span style="color: var(--muted); font-weight: normal;" id="eventStartedTime">Запущен</span>
+                        </div>
+                        <div class="desc">Хост успешно сконфигурирован, DI службы инициализированы, открыто прослушивание портов.</div>
+                    </div>
+                    <div class="event-card">
+                        <div class="title" style="color: #d08b00;">
+                            <span>○ ApplicationStopping</span>
+                            <span style="color: var(--muted); font-weight: normal;">Ожидание SIGINT</span>
+                        </div>
+                        <div class="desc">Регистратор корректной остановки (Graceful Shutdown) для завершения фоновых задач.</div>
+                    </div>
+                    <div class="event-card">
+                        <div class="title" style="color: var(--danger);">
+                            <span>○ ApplicationStopped</span>
+                            <span style="color: var(--muted); font-weight: normal;">Регистратор</span>
+                        </div>
+                        <div class="desc">Регистратор завершения работы всех служб и освобождения неуправляемых ресурсов хоста.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchLifecycleData() {
+            try {
+                const response = await fetch('/api/lifecycle');
+                const data = await response.json();
+
+                document.getElementById('navHostStatus').textContent = data.hostStatus;
+                document.getElementById('navUptime').textContent = data.uptime;
+
+                document.getElementById('idTransient1').textContent = data.di.transient1;
+                document.getElementById('idTransient2').textContent = data.di.transient2;
+                document.getElementById('idScoped1').textContent = data.di.scoped1;
+                document.getElementById('idScoped2').textContent = data.di.scoped2;
+                document.getElementById('idSingleton1').textContent = data.di.singleton1;
+                document.getElementById('idSingleton2').textContent = data.di.singleton2;
+
+                if (data.events && data.events.length > 0) {
+                    const ev = data.events[0];
+                    document.getElementById('eventStartedTime').textContent = new Date(ev.timestamp).toLocaleTimeString();
+                }
+
+                const tbody = document.getElementById('logTableBody');
+                if (data.recentRequests && data.recentRequests.length > 0) {
+                    document.getElementById('reqCount').textContent = data.recentRequests.length + ' записей';
+                    tbody.innerHTML = '';
+                    data.recentRequests.forEach(req => {
+                        const tr = document.createElement('tr');
+                        const statusClass = req.statusCode < 400 ? 'status-200' : 'status-400';
+                        const methodColor = req.method === 'POST' ? '#1f71ff' : '#64748b';
+                        tr.innerHTML = `
+                            <td><span class="guid-code">${req.id}</span></td>
+                            <td style="color: ${methodColor}; font-weight: 700;">${req.method}</td>
+                            <td><code>${req.path}</code></td>
+                            <td><span class="status-pill ${statusClass}">${req.statusCode}</span></td>
+                            <td>${req.elapsedMilliseconds} ms</td>
+                            <td style="color: var(--muted);">${new Date(req.timestamp).toLocaleTimeString()}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } catch (err) {
+                console.error('шибка:', err);
+            }
+        }
+
+        document.getElementById('btnDemo').addEventListener('click', () => {
+            document.getElementById('fieldName').value = 'лексей Смирнов';
+            document.getElementById('fieldEmail').value = 'alexey.smirnov@example.com';
+            document.getElementById('fieldCategory').value = 'опрос по Middleware';
+            document.getElementById('fieldPriority').value = '3';
+            document.getElementById('fieldMessage').value = 'роверка сквозного жизненного цикла конвейера Middleware и времени жизни DI.';
+        });
+
+        document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const alertBox = document.getElementById('alertBox');
+            alertBox.style.display = 'block';
+            alertBox.className = 'alert alert-info';
+            alertBox.textContent = '⏳ ередача запроса через конвейер Middleware...';
+
+            const formData = new FormData(e.target);
+            try {
+                const res = await fetch('/submit', {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                const result = await res.json();
+                if (res.ok) {
+                    alertBox.className = 'alert alert-success';
+                    alertBox.innerHTML = `
+                        <div style="font-weight: 800; margin-bottom: 4px;">✓ Форма успешно обработана Middleware и сервером!</div>
+                        <div>Request ID: <code style="color: #2a5cff;">${result.requestId}</code> | алидировано Middleware: <strong>${result.middlewareValidated ? 'а' : 'ет'}</strong></div>
+                        <div>Scoped Operation ID этого запроса: <code style="color: #245fe3;">${result.scopedOperationId}</code></div>
+                    `;
+                    await fetchLifecycleData();
+                } else {
+                    alertBox.className = 'alert alert-danger';
+                    alertBox.textContent = 'шибка: ' + (result.message || 'шибка валидации');
+                }
+            } catch (err) {
+                alertBox.className = 'alert alert-danger';
+                alertBox.textContent = 'Сетевая ошибка: ' + err.message;
+            }
+        });
+
+        document.getElementById('btnRefreshLifecycle').addEventListener('click', fetchLifecycleData);
+
+        fetchLifecycleData();
+        setInterval(fetchLifecycleData, 4000);
+    </script>
+</body>
+</html>

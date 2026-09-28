@@ -1,0 +1,26 @@
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\ASP pystoy.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\ASP pystoy.AssemblyInfoInputs.cache
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\ASP pystoy.AssemblyInfo.cs
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\ASP pystoy.csproj.CoreCompileInputs.cache
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\ASP pystoy.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\bin\Debug\net8.0\appsettings.json
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\bin\Debug\net8.0\ASP pystoy.staticwebassets.runtime.json
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\bin\Debug\net8.0\ASP pystoy.exe
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\bin\Debug\net8.0\ASP pystoy.deps.json
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\bin\Debug\net8.0\ASP pystoy.runtimeconfig.json
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\bin\Debug\net8.0\ASP pystoy.dll
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\bin\Debug\net8.0\ASP pystoy.pdb
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\staticwebassets\msbuild.ASP pystoy.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\staticwebassets\msbuild.build.ASP pystoy.props
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ASP pystoy.props
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ASP pystoy.props
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\scopedcss\bundle\ASP pystoy.styles.css
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\ASP pystoy.dll
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\refint\ASP pystoy.dll
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\ASP pystoy.pdb
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\ASP pystoy.genruntimeconfig.cache
+C:\Users\Ярче\Desktop\Development-of-web-ASP.NET-and-AJAX--main\ASP pystoy\obj\Debug\net8.0\ref\ASP pystoy.dll

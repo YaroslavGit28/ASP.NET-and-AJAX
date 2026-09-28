@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма обработана</title>
+    <style>
+        :root {
+            --bg-1: #f4f7ff;
+            --bg-2: #eaf3ff;
+            --panel: rgba(255,255,255,0.78);
+            --panel-strong: #ffffff;
+            --line: rgba(146, 160, 198, 0.28);
+            --text: #1d2440;
+            --muted: #58698d;
+            --primary: #5b6cff;
+            --primary-2: #7a4dff;
+            --success: #1bb56d;
+            --shadow: 0 24px 64px rgba(91, 108, 255, 0.18);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(91,108,255,0.16), transparent 24%),
+                radial-gradient(circle at bottom right, rgba(122,77,255,0.14), transparent 26%),
+                linear-gradient(135deg, var(--bg-1), var(--bg-2));
+            color: var(--text);
+        }
+
+        .panel {
+            width: min(680px, calc(100vw - 32px));
+            background: var(--panel);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(18px);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            padding: 32px 28px;
+        }
+
+        .icon {
+            width: 76px;
+            height: 76px;
+            border-radius: 24px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 18px;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--success), #53d19d);
+            color: white;
+            box-shadow: 0 18px 35px rgba(27, 181, 109, 0.24);
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.72rem;
+            color: #4b67d7;
+            font-weight: 800;
+        }
+
+        h1 {
+            margin: 0;
+            text-align: center;
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            letter-spacing: -0.04em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px 18px;
+            margin-top: 24px;
+            margin-bottom: 28px;
+        }
+
+        .item {
+            background: rgba(255,255,255,0.72);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px 14px;
+        }
+
+        .label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 800;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .value {
+            display: block;
+            font-weight: 700;
+            color: var(--text);
+            word-break: break-word;
+        }
+
+        .primary-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: white;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            box-shadow: 0 16px 28px rgba(91,108,255,0.25);
+        }
+
+        @media (max-width: 560px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 24px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="panel">
+        <div class="icon">✓</div>
+        <p class="eyebrow">Заявка принята</p>
+        <h1>Форма успешно отправлена</h1>
+
+        <div class="grid">
+            <div class="item">
+                <span class="label">Имя</span>
+                <span class="value">Алексей Смирнов</span>
+            </div>
+            <div class="item">
+                <span class="label">Email</span>
+                <span class="value">email@example.com</span>
+            </div>
+            <div class="item">
+                <span class="label">Категория</span>
+                <span class="value">Общие вопросы</span>
+            </div>
+            <div class="item">
+                <span class="label">Request ID</span>
+                <span class="value">12345678</span>
+            </div>
+        </div>
+
+        <a href="/" class="primary-btn">← Вернуться на главную</a>
+    </div>
+</body>
+</html>
