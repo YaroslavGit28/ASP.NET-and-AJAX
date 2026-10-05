@@ -1,0 +1,1 @@
+using System.ComponentModel.DataAnnotations; namespace ApiFromLecture.Models; public class CustomerDto{public string Name{get;set;}="";} public class OrderItemDto{public int ProductId{get;set;} public int Quantity{get;set;}} public class OrderRequest{[Required]public CustomerDto Customer{get;set;}=new();[MinLength(1)]public List<OrderItemDto> Items{get;set;}=new();}
