@@ -1,0 +1,77 @@
+{
+  "Version": 1,
+  "Hash": "/XXgBjY5bgDe3iut/DIkSVv2YGNCaNvkKODcVC5vzSM=",
+  "Source": "ASP pystoy",
+  "BasePath": "_content/ASP pystoy",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ASP pystoy\\wwwroot",
+      "Source": "ASP pystoy",
+      "ContentRoot": "C:\\Users\\Ярче\\Desktop\\Development-of-web-ASP.NET-and-AJAX--main\\ASP pystoy\\wwwroot\\",
+      "BasePath": "_content/ASP pystoy",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Ярче\\Desktop\\Development-of-web-ASP.NET-and-AJAX--main\\ASP pystoy\\wwwroot\\index.html",
+      "SourceId": "ASP pystoy",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Ярче\\Desktop\\Development-of-web-ASP.NET-and-AJAX--main\\ASP pystoy\\wwwroot\\",
+      "BasePath": "_content/ASP pystoy",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\Ярче\\Desktop\\Development-of-web-ASP.NET-and-AJAX--main\\ASP pystoy\\wwwroot\\submitted.html",
+      "SourceId": "ASP pystoy",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Ярче\\Desktop\\Development-of-web-ASP.NET-and-AJAX--main\\ASP pystoy\\wwwroot\\",
+      "BasePath": "_content/ASP pystoy",
+      "RelativePath": "submitted.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\submitted.html"
+    },
+    {
+      "Identity": "C:\\Users\\Ярче\\Desktop\\Development-of-web-ASP.NET-and-AJAX--main\\ASP pystoy\\wwwroot\\terminal.html",
+      "SourceId": "ASP pystoy",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Ярче\\Desktop\\Development-of-web-ASP.NET-and-AJAX--main\\ASP pystoy\\wwwroot\\",
+      "BasePath": "_content/ASP pystoy",
+      "RelativePath": "terminal.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\terminal.html"
+    }
+  ]
+}

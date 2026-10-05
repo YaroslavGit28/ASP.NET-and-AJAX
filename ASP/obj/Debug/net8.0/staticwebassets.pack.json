@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Ярче\\Desktop\\Development-of-web-ASP.NET-and-AJAX--main\\ASP pystoy\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\Ярче\\Desktop\\Development-of-web-ASP.NET-and-AJAX--main\\ASP pystoy\\wwwroot\\submitted.html",
+      "PackagePath": "staticwebassets\\submitted.html"
+    },
+    {
+      "Id": "C:\\Users\\Ярче\\Desktop\\Development-of-web-ASP.NET-and-AJAX--main\\ASP pystoy\\wwwroot\\terminal.html",
+      "PackagePath": "staticwebassets\\terminal.html"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ASP pystoy.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ASP pystoy.props",
+      "PackagePath": "build\\ASP pystoy.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ASP pystoy.props",
+      "PackagePath": "buildMultiTargeting\\ASP pystoy.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ASP pystoy.props",
+      "PackagePath": "buildTransitive\\ASP pystoy.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
